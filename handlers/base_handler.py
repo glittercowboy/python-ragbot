@@ -1,5 +1,7 @@
 # handlers/base_handler.py
 import logging
+from telegram import Update
+from telegram.ext import ContextTypes
 from database import DatabaseService
 from whisper_service import WhisperService
 from claude_service import ClaudeService
@@ -28,3 +30,9 @@ class BaseHandler:
             logger.error(f"{message}: {error}")
         else:
             logger.error(message)
+            
+    async def handle_message(self, update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+        """Base method to be overridden by subclasses."""
+        # This is a placeholder method that should be overridden by subclasses
+        logger.warning("BaseHandler.handle_message called directly - this should be overridden by a subclass")
+        await update.message.reply_text("Sorry, this handler doesn't process messages.")
