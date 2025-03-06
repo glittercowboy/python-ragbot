@@ -4,6 +4,7 @@ from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import ContextTypes
 from handlers.base_handler import BaseHandler
 import config
+import json
 
 logger = logging.getLogger(__name__)
 
@@ -113,9 +114,25 @@ class CommandHandler(BaseHandler):
         # Create a list of thoughts
         thought_list = "Your recent thoughts:\n\n"
         for i, thought in enumerate(thoughts, 1):
-            text = thought.get("text", "")
-            if "metadata" in thought and "text" in thought["metadata"]:
-                text = thought["metadata"]["text"]
+            # Extract text more safely
+            text = "No content"
+            
+            if isinstance(thought, dict):
+                if "text" in thought:
+                    text = thought["text"]
+                elif "metadata" in thought and isinstance(thought["metadata"], dict) and "text" in thought["metadata"]:
+                    text = thought["metadata"]["text"]
+            elif isinstance(thought, str):
+                # Try to parse JSON
+                try:
+                    thought_dict = json.loads(thought)
+                    if "text" in thought_dict:
+                        text = thought_dict["text"]
+                    elif "metadata" in thought_dict and isinstance(thought_dict["metadata"], dict) and "text" in thought_dict["metadata"]:
+                        text = thought_dict["metadata"]["text"]
+                except:
+                    # Just use the string directly
+                    text = thought
             
             # Truncate long thoughts
             if len(text) > 100:
@@ -123,15 +140,16 @@ class CommandHandler(BaseHandler):
             
             # Add timestamp if available
             timestamp = ""
-            if "metadata" in thought and "created_at" in thought["metadata"]:
+            if isinstance(thought, dict) and "metadata" in thought and isinstance(thought["metadata"], dict) and "created_at" in thought["metadata"]:
                 timestamp = f" ({thought['metadata']['created_at'][:10]})"
             
             # Add categories if available
             categories = ""
-            if "metadata" in thought and "categories" in thought["metadata"]:
-                categories = f" [{', '.join(thought['metadata']['categories'])}]"
+            if isinstance(thought, dict) and "metadata" in thought and isinstance(thought["metadata"], dict) and "categories" in thought["metadata"]:
+                if isinstance(thought["metadata"]["categories"], list):
+                    categories = f" [{', '.join(thought['metadata']['categories'])}]"
             
-            thought_list += f"{i}.{timestamp}{categories} {text}\n\n"
+            thought_list += f"{i}. {text}{timestamp}{categories}\n\n"
         
         await update.message.reply_text(thought_list)
     
@@ -158,9 +176,25 @@ class CommandHandler(BaseHandler):
         # Create a list of thoughts with numbers
         thought_list = "Select a thought to delete:\n\n"
         for i, thought in enumerate(thoughts, 1):
-            text = thought.get("text", "")
-            if "metadata" in thought and "text" in thought["metadata"]:
-                text = thought["metadata"]["text"]
+            # Extract text more safely
+            text = "No content"
+            
+            if isinstance(thought, dict):
+                if "text" in thought:
+                    text = thought["text"]
+                elif "metadata" in thought and isinstance(thought["metadata"], dict) and "text" in thought["metadata"]:
+                    text = thought["metadata"]["text"]
+            elif isinstance(thought, str):
+                # Try to parse JSON
+                try:
+                    thought_dict = json.loads(thought)
+                    if "text" in thought_dict:
+                        text = thought_dict["text"]
+                    elif "metadata" in thought_dict and isinstance(thought_dict["metadata"], dict) and "text" in thought_dict["metadata"]:
+                        text = thought_dict["metadata"]["text"]
+                except:
+                    # Just use the string directly
+                    text = thought
             
             # Truncate long thoughts
             if len(text) > 100:
@@ -168,10 +202,11 @@ class CommandHandler(BaseHandler):
             
             # Add categories if available
             categories = ""
-            if "metadata" in thought and "categories" in thought["metadata"]:
-                categories = f" [{', '.join(thought['metadata']['categories'])}]"
+            if isinstance(thought, dict) and "metadata" in thought and isinstance(thought["metadata"], dict) and "categories" in thought["metadata"]:
+                if isinstance(thought["metadata"]["categories"], list):
+                    categories = f" [{', '.join(thought['metadata']['categories'])}]"
             
-            thought_list += f"{i}.{categories} {text}\n\n"
+            thought_list += f"{i}. {text}{categories}\n\n"
         
         # Create inline keyboard
         keyboard = []
@@ -229,9 +264,25 @@ class CommandHandler(BaseHandler):
         # Create a list of thoughts
         thought_list = f"Your thoughts related to {category}:\n\n"
         for i, thought in enumerate(thoughts, 1):
-            text = thought.get("text", "")
-            if "metadata" in thought and "text" in thought["metadata"]:
-                text = thought["metadata"]["text"]
+            # Extract text more safely
+            text = "No content"
+            
+            if isinstance(thought, dict):
+                if "text" in thought:
+                    text = thought["text"]
+                elif "metadata" in thought and isinstance(thought["metadata"], dict) and "text" in thought["metadata"]:
+                    text = thought["metadata"]["text"]
+            elif isinstance(thought, str):
+                # Try to parse JSON
+                try:
+                    thought_dict = json.loads(thought)
+                    if "text" in thought_dict:
+                        text = thought_dict["text"]
+                    elif "metadata" in thought_dict and isinstance(thought_dict["metadata"], dict) and "text" in thought_dict["metadata"]:
+                        text = thought_dict["metadata"]["text"]
+                except:
+                    # Just use the string directly
+                    text = thought
             
             # Truncate long thoughts
             if len(text) > 100:
@@ -239,9 +290,9 @@ class CommandHandler(BaseHandler):
             
             # Add timestamp if available
             timestamp = ""
-            if "metadata" in thought and "created_at" in thought["metadata"]:
+            if isinstance(thought, dict) and "metadata" in thought and isinstance(thought["metadata"], dict) and "created_at" in thought["metadata"]:
                 timestamp = f" ({thought['metadata']['created_at'][:10]})"
             
-            thought_list += f"{i}.{timestamp} {text}\n\n"
+            thought_list += f"{i}. {text}{timestamp}\n\n"
         
         await update.message.reply_text(thought_list)
