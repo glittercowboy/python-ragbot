@@ -11,6 +11,7 @@ STATE_CHAT = "chat"
 STATE_DELETE = "delete"
 
 import logging
+import sys
 from telegram import Update
 from telegram.ext import ContextTypes
 from handlers.command_handler import CommandHandler
@@ -26,33 +27,60 @@ class HandlerManager:
     
     def __init__(self):
         """Initialize all handlers with the same service instances."""
-        # Create service instances to be shared
-        from database import DatabaseService
-        from whisper_service import WhisperService
-        from claude_service import ClaudeService
-        from game_service import GameService
-        
-        db_service = DatabaseService()
-        whisper_service = WhisperService()
-        claude_service = ClaudeService()
-        game_service = GameService(db_service, claude_service)
-        
-        # Initialize handlers with shared services
-        self.command_handler = CommandHandler(
-            db_service, whisper_service, claude_service, game_service
-        )
-        self.normal_handler = NormalHandler(
-            db_service, whisper_service, claude_service, game_service
-        )
-        self.chat_handler = ChatHandler(
-            db_service, whisper_service, claude_service, game_service
-        )
-        self.game_handler = GameHandler(
-            db_service, whisper_service, claude_service, game_service
-        )
-        self.callback_handler = CallbackHandler(
-            db_service, whisper_service, claude_service, game_service
-        )
+        try:
+            print("📦 Initializing services...")
+            # Create service instances to be shared
+            from database import DatabaseService
+            from whisper_service import WhisperService
+            from claude_service import ClaudeService
+            from game_service import GameService
+            
+            print("🗄️ Setting up database service...")
+            db_service = DatabaseService()
+            
+            print("🎙️ Setting up voice transcription service...")
+            whisper_service = WhisperService()
+            
+            print("🧠 Setting up Claude AI service...")
+            claude_service = ClaudeService()
+            
+            print("🎮 Setting up game service...")
+            game_service = GameService(db_service, claude_service)
+            
+            # Initialize handlers with shared services
+            print("🔄 Initializing command handler...")
+            self.command_handler = CommandHandler(
+                db_service, whisper_service, claude_service, game_service
+            )
+            
+            print("📥 Initializing normal message handler...")
+            self.normal_handler = NormalHandler(
+                db_service, whisper_service, claude_service, game_service
+            )
+            
+            print("💬 Initializing chat handler...")
+            self.chat_handler = ChatHandler(
+                db_service, whisper_service, claude_service, game_service
+            )
+            
+            print("🎯 Initializing game handler...")
+            self.game_handler = GameHandler(
+                db_service, whisper_service, claude_service, game_service
+            )
+            
+            print("🔄 Initializing callback handler...")
+            self.callback_handler = CallbackHandler(
+                db_service, whisper_service, claude_service, game_service
+            )
+            
+            print("✅ All handlers initialized successfully!")
+            
+        except Exception as e:
+            error_msg = f"Fatal error during handler initialization: {e}"
+            print(f"\n❌ {error_msg}")
+            logger.error(error_msg)
+            print("\nThe application cannot continue. Please fix the error and restart.")
+            sys.exit(1)
     
     # Command handlers
     async def start_command(self, update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:

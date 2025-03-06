@@ -1,0 +1,8 @@
+2025-03-05 18:09:09,490 - astrapy.core.db - INFO - ASTRA_DB_KEYSPACE is not set. Defaulting to 'default_keyspace'
+2025-03-05 18:09:10,566 - httpx - INFO - HTTP Request: POST https://0fa65228-3087-4766-9af1-e922da7f2964-us-east-2.apps.astra.datastax.com/api/json/v1/default_keyspace "HTTP/1.1 200 OK"
+2025-03-05 18:09:25,753 - httpx - INFO - HTTP Request: POST https://0fa65228-3087-4766-9af1-e922da7f2964-us-east-2.apps.astra.datastax.com/api/json/v1/default_keyspace "HTTP/1.1 200 OK"
+2025-03-05 18:09:25,755 - database - INFO - Created new collection: personal_thoughts
+2025-03-05 18:09:25,965 - httpx - INFO - HTTP Request: POST https://0fa65228-3087-4766-9af1-e922da7f2964-us-east-2.apps.astra.datastax.com/api/json/v1/default_keyspace "HTTP/1.1 200 OK"
+2025-03-05 18:09:25,966 - database - ERROR - Error getting/creating collection game_responses: string indices must be integers, not 'str'
+2025-03-05 18:09:25,967 - database - ERROR - Failed to initialize database connection: string indices must be integers, not 'str'
+2025-03-05 18:09:25,967 - __main__ - ERROR - Error starting bot: string indices must be integers, not 'str'
