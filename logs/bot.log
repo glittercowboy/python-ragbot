@@ -6,3 +6,84 @@
 2025-03-05 18:09:25,966 - database - ERROR - Error getting/creating collection game_responses: string indices must be integers, not 'str'
 2025-03-05 18:09:25,967 - database - ERROR - Failed to initialize database connection: string indices must be integers, not 'str'
 2025-03-05 18:09:25,967 - __main__ - ERROR - Error starting bot: string indices must be integers, not 'str'
+2025-03-05 18:14:11,481 - astrapy.core.db - INFO - ASTRA_DB_KEYSPACE is not set. Defaulting to 'default_keyspace'
+2025-03-05 18:14:12,227 - httpx - INFO - HTTP Request: POST https://0fa65228-3087-4766-9af1-e922da7f2964-us-east-2.apps.astra.datastax.com/api/json/v1/default_keyspace "HTTP/1.1 200 OK"
+2025-03-05 18:14:12,228 - database - ERROR - Error getting/creating collection personal_thoughts: string indices must be integers, not 'str'
+2025-03-05 18:14:12,228 - database - ERROR - Failed to initialize database connection: string indices must be integers, not 'str'
+2025-03-05 18:14:12,229 - handlers - ERROR - Fatal error during handler initialization: string indices must be integers, not 'str'
+2025-03-05 18:14:12,229 - __main__ - INFO - Bot stopped!
+2025-03-05 18:18:58,765 - astrapy.core.db - INFO - ASTRA_DB_KEYSPACE is not set. Defaulting to 'default_keyspace'
+2025-03-05 18:18:59,458 - httpx - INFO - HTTP Request: POST https://0fa65228-3087-4766-9af1-e922da7f2964-us-east-2.apps.astra.datastax.com/api/json/v1/default_keyspace/personal_thoughts "HTTP/1.1 200 OK"
+2025-03-05 18:18:59,642 - httpx - INFO - HTTP Request: POST https://0fa65228-3087-4766-9af1-e922da7f2964-us-east-2.apps.astra.datastax.com/api/json/v1/default_keyspace/game_responses "HTTP/1.1 200 OK"
+2025-03-05 18:19:16,035 - httpx - INFO - HTTP Request: POST https://0fa65228-3087-4766-9af1-e922da7f2964-us-east-2.apps.astra.datastax.com/api/json/v1/default_keyspace "HTTP/1.1 200 OK"
+2025-03-05 18:19:16,037 - database - INFO - Created new collection: game_responses
+2025-03-05 18:19:16,478 - httpx - INFO - HTTP Request: POST https://0fa65228-3087-4766-9af1-e922da7f2964-us-east-2.apps.astra.datastax.com/api/json/v1/default_keyspace/chat_interactions "HTTP/1.1 200 OK"
+2025-03-05 18:19:32,527 - httpx - INFO - HTTP Request: POST https://0fa65228-3087-4766-9af1-e922da7f2964-us-east-2.apps.astra.datastax.com/api/json/v1/default_keyspace "HTTP/1.1 200 OK"
+2025-03-05 18:19:32,528 - database - INFO - Created new collection: chat_interactions
+2025-03-05 18:19:32,553 - astrapy.core.db - INFO - ASTRA_DB_KEYSPACE is not set. Defaulting to 'default_keyspace'
+2025-03-05 18:19:33,000 - httpx - INFO - HTTP Request: POST https://0fa65228-3087-4766-9af1-e922da7f2964-us-east-2.apps.astra.datastax.com/api/json/v1/default_keyspace/personal_thoughts "HTTP/1.1 200 OK"
+2025-03-05 18:19:33,179 - httpx - INFO - HTTP Request: POST https://0fa65228-3087-4766-9af1-e922da7f2964-us-east-2.apps.astra.datastax.com/api/json/v1/default_keyspace/game_responses "HTTP/1.1 200 OK"
+2025-03-05 18:19:33,393 - httpx - INFO - HTTP Request: POST https://0fa65228-3087-4766-9af1-e922da7f2964-us-east-2.apps.astra.datastax.com/api/json/v1/default_keyspace/chat_interactions "HTTP/1.1 200 OK"
+2025-03-05 18:19:33,405 - __main__ - INFO - Starting bot...
+2025-03-05 18:19:34,287 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7749947317:AAG9mL3P6aFOo7sGxovDUy7JjQ0cxGpEkTg/getMe "HTTP/1.1 200 OK"
+2025-03-05 18:19:34,289 - apscheduler.scheduler - INFO - Scheduler started
+2025-03-05 18:19:34,289 - telegram.ext.Application - INFO - Application started
+2025-03-05 18:19:34,509 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7749947317:AAG9mL3P6aFOo7sGxovDUy7JjQ0cxGpEkTg/deleteWebhook "HTTP/1.1 200 OK"
+2025-03-05 18:19:34,510 - __main__ - INFO - Bot started successfully!
+2025-03-05 18:19:35,210 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7749947317:AAG9mL3P6aFOo7sGxovDUy7JjQ0cxGpEkTg/getUpdates "HTTP/1.1 200 OK"
+2025-03-05 18:25:18,946 - astrapy.core.db - INFO - ASTRA_DB_KEYSPACE is not set. Defaulting to 'default_keyspace'
+2025-03-05 18:25:19,642 - httpx - INFO - HTTP Request: POST https://0fa65228-3087-4766-9af1-e922da7f2964-us-east-2.apps.astra.datastax.com/api/json/v1/default_keyspace/personal_thoughts "HTTP/1.1 200 OK"
+2025-03-05 18:25:19,929 - httpx - INFO - HTTP Request: POST https://0fa65228-3087-4766-9af1-e922da7f2964-us-east-2.apps.astra.datastax.com/api/json/v1/default_keyspace/game_responses "HTTP/1.1 200 OK"
+2025-03-05 18:25:20,100 - httpx - INFO - HTTP Request: POST https://0fa65228-3087-4766-9af1-e922da7f2964-us-east-2.apps.astra.datastax.com/api/json/v1/default_keyspace/chat_interactions "HTTP/1.1 200 OK"
+2025-03-05 18:25:20,125 - astrapy.core.db - INFO - ASTRA_DB_KEYSPACE is not set. Defaulting to 'default_keyspace'
+2025-03-05 18:25:20,366 - httpx - INFO - HTTP Request: POST https://0fa65228-3087-4766-9af1-e922da7f2964-us-east-2.apps.astra.datastax.com/api/json/v1/default_keyspace/personal_thoughts "HTTP/1.1 200 OK"
+2025-03-05 18:25:20,538 - httpx - INFO - HTTP Request: POST https://0fa65228-3087-4766-9af1-e922da7f2964-us-east-2.apps.astra.datastax.com/api/json/v1/default_keyspace/game_responses "HTTP/1.1 200 OK"
+2025-03-05 18:25:20,711 - httpx - INFO - HTTP Request: POST https://0fa65228-3087-4766-9af1-e922da7f2964-us-east-2.apps.astra.datastax.com/api/json/v1/default_keyspace/chat_interactions "HTTP/1.1 200 OK"
+2025-03-05 18:25:20,728 - __main__ - INFO - Starting bot...
+2025-03-05 18:25:23,100 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7749947317:AAFqD98sjj2xDlIPdUlm2efQcF944JDClts/getMe "HTTP/1.1 200 OK"
+2025-03-05 18:25:23,102 - apscheduler.scheduler - INFO - Scheduler started
+2025-03-05 18:25:23,102 - telegram.ext.Application - INFO - Application started
+2025-03-05 18:25:23,336 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7749947317:AAFqD98sjj2xDlIPdUlm2efQcF944JDClts/deleteWebhook "HTTP/1.1 200 OK"
+2025-03-05 18:25:23,338 - __main__ - INFO - Bot started successfully!
+2025-03-05 18:25:23,338 - __main__ - ERROR - Error starting bot: 'Application' object has no attribute 'idle'
+2025-03-05 18:26:30,173 - astrapy.core.db - INFO - ASTRA_DB_KEYSPACE is not set. Defaulting to 'default_keyspace'
+2025-03-05 18:26:30,744 - httpx - INFO - HTTP Request: POST https://0fa65228-3087-4766-9af1-e922da7f2964-us-east-2.apps.astra.datastax.com/api/json/v1/default_keyspace/personal_thoughts "HTTP/1.1 200 OK"
+2025-03-05 18:26:30,892 - httpx - INFO - HTTP Request: POST https://0fa65228-3087-4766-9af1-e922da7f2964-us-east-2.apps.astra.datastax.com/api/json/v1/default_keyspace/game_responses "HTTP/1.1 200 OK"
+2025-03-05 18:26:31,069 - httpx - INFO - HTTP Request: POST https://0fa65228-3087-4766-9af1-e922da7f2964-us-east-2.apps.astra.datastax.com/api/json/v1/default_keyspace/chat_interactions "HTTP/1.1 200 OK"
+2025-03-05 18:26:31,090 - astrapy.core.db - INFO - ASTRA_DB_KEYSPACE is not set. Defaulting to 'default_keyspace'
+2025-03-05 18:26:31,276 - httpx - INFO - HTTP Request: POST https://0fa65228-3087-4766-9af1-e922da7f2964-us-east-2.apps.astra.datastax.com/api/json/v1/default_keyspace/personal_thoughts "HTTP/1.1 200 OK"
+2025-03-05 18:26:31,426 - httpx - INFO - HTTP Request: POST https://0fa65228-3087-4766-9af1-e922da7f2964-us-east-2.apps.astra.datastax.com/api/json/v1/default_keyspace/game_responses "HTTP/1.1 200 OK"
+2025-03-05 18:26:31,592 - httpx - INFO - HTTP Request: POST https://0fa65228-3087-4766-9af1-e922da7f2964-us-east-2.apps.astra.datastax.com/api/json/v1/default_keyspace/chat_interactions "HTTP/1.1 200 OK"
+2025-03-05 18:26:31,605 - __main__ - INFO - Starting bot...
+2025-03-05 18:26:32,494 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7749947317:AAFqD98sjj2xDlIPdUlm2efQcF944JDClts/getMe "HTTP/1.1 200 OK"
+2025-03-05 18:26:32,496 - apscheduler.scheduler - INFO - Scheduler started
+2025-03-05 18:26:32,496 - telegram.ext.Application - INFO - Application started
+2025-03-05 18:26:32,842 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7749947317:AAFqD98sjj2xDlIPdUlm2efQcF944JDClts/deleteWebhook "HTTP/1.1 200 OK"
+2025-03-05 18:26:32,843 - __main__ - INFO - Bot started successfully!
+2025-03-05 18:26:32,843 - __main__ - ERROR - Error starting bot: 'Application' object has no attribute 'idle'
+2025-03-05 18:26:54,876 - astrapy.core.db - INFO - ASTRA_DB_KEYSPACE is not set. Defaulting to 'default_keyspace'
+2025-03-05 18:26:55,614 - httpx - INFO - HTTP Request: POST https://0fa65228-3087-4766-9af1-e922da7f2964-us-east-2.apps.astra.datastax.com/api/json/v1/default_keyspace/personal_thoughts "HTTP/1.1 200 OK"
+2025-03-05 18:26:55,849 - httpx - INFO - HTTP Request: POST https://0fa65228-3087-4766-9af1-e922da7f2964-us-east-2.apps.astra.datastax.com/api/json/v1/default_keyspace/game_responses "HTTP/1.1 200 OK"
+2025-03-05 18:26:56,094 - httpx - INFO - HTTP Request: POST https://0fa65228-3087-4766-9af1-e922da7f2964-us-east-2.apps.astra.datastax.com/api/json/v1/default_keyspace/chat_interactions "HTTP/1.1 200 OK"
+2025-03-05 18:26:56,111 - astrapy.core.db - INFO - ASTRA_DB_KEYSPACE is not set. Defaulting to 'default_keyspace'
+2025-03-05 18:26:56,340 - httpx - INFO - HTTP Request: POST https://0fa65228-3087-4766-9af1-e922da7f2964-us-east-2.apps.astra.datastax.com/api/json/v1/default_keyspace/personal_thoughts "HTTP/1.1 200 OK"
+2025-03-05 18:26:56,564 - httpx - INFO - HTTP Request: POST https://0fa65228-3087-4766-9af1-e922da7f2964-us-east-2.apps.astra.datastax.com/api/json/v1/default_keyspace/game_responses "HTTP/1.1 200 OK"
+2025-03-05 18:26:56,782 - httpx - INFO - HTTP Request: POST https://0fa65228-3087-4766-9af1-e922da7f2964-us-east-2.apps.astra.datastax.com/api/json/v1/default_keyspace/chat_interactions "HTTP/1.1 200 OK"
+2025-03-05 18:26:56,798 - __main__ - INFO - Starting bot...
+2025-03-05 18:26:57,907 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7749947317:AAFqD98sjj2xDlIPdUlm2efQcF944JDClts/getMe "HTTP/1.1 200 OK"
+2025-03-05 18:26:57,909 - apscheduler.scheduler - INFO - Scheduler started
+2025-03-05 18:26:57,910 - telegram.ext.Application - INFO - Application started
+2025-03-05 18:26:58,138 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7749947317:AAFqD98sjj2xDlIPdUlm2efQcF944JDClts/deleteWebhook "HTTP/1.1 200 OK"
+2025-03-05 18:26:58,140 - __main__ - INFO - Bot started successfully!
+2025-03-05 18:26:58,844 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7749947317:AAFqD98sjj2xDlIPdUlm2efQcF944JDClts/getUpdates "HTTP/1.1 200 OK"
+2025-03-05 18:26:59,369 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7749947317:AAFqD98sjj2xDlIPdUlm2efQcF944JDClts/sendMessage "HTTP/1.1 200 OK"
+2025-03-05 18:26:59,749 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7749947317:AAFqD98sjj2xDlIPdUlm2efQcF944JDClts/sendMessage "HTTP/1.1 200 OK"
+2025-03-05 18:27:00,132 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7749947317:AAFqD98sjj2xDlIPdUlm2efQcF944JDClts/sendMessage "HTTP/1.1 200 OK"
+2025-03-05 18:27:00,522 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7749947317:AAFqD98sjj2xDlIPdUlm2efQcF944JDClts/sendMessage "HTTP/1.1 200 OK"
+2025-03-05 18:27:09,095 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7749947317:AAFqD98sjj2xDlIPdUlm2efQcF944JDClts/getUpdates "HTTP/1.1 200 OK"
+2025-03-05 18:27:19,342 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7749947317:AAFqD98sjj2xDlIPdUlm2efQcF944JDClts/getUpdates "HTTP/1.1 200 OK"
+2025-03-05 18:27:25,265 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7749947317:AAFqD98sjj2xDlIPdUlm2efQcF944JDClts/getUpdates "HTTP/1.1 200 OK"
+2025-03-05 18:27:26,827 - httpx - INFO - HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2025-03-05 18:27:26,841 - claude_service - ERROR - Error generating game question: object Message can't be used in 'await' expression
+2025-03-05 18:27:27,774 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7749947317:AAFqD98sjj2xDlIPdUlm2efQcF944JDClts/sendMessage "HTTP/1.1 200 OK"
+2025-03-05 18:27:37,167 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot7749947317:AAFqD98sjj2xDlIPdUlm2efQcF944JDClts/getUpdates "HTTP/1.1 200 OK"

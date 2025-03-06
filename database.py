@@ -2,86 +2,96 @@
 import uuid
 import logging
 import datetime
+import json
 from astrapy.db import AstraDB, AstraDBCollection
-from astrapy.ops import AstraDBOps
 import config
 
 logger = logging.getLogger(__name__)
 
 class DatabaseService:
     def __init__(self):
+        """Initialize the database service with connection to AstraDB."""
         try:
-            # Initialize connection to AstraDB
+            print("🔌 Connecting to AstraDB...")
             self.db = AstraDB(
                 token=config.ASTRA_DB_APPLICATION_TOKEN,
                 api_endpoint=config.ASTRA_DB_API_ENDPOINT
             )
             
-            print("🔌 Connecting to database...")
+            print("✅ Connected to AstraDB successfully")
+            
             # Initialize collections
-            self.thoughts_collection = self._get_or_create_collection(config.DB_COLLECTION_THOUGHTS)
-            print(f"✅ Created/accessed collection: {config.DB_COLLECTION_THOUGHTS}")
+            self._init_collections()
             
-            self.game_collection = self._get_or_create_collection(config.DB_COLLECTION_GAME)
-            print(f"✅ Created/accessed collection: {config.DB_COLLECTION_GAME}")
-            
-            self.chat_collection = self._get_or_create_collection(config.DB_COLLECTION_CHAT)
-            print(f"✅ Created/accessed collection: {config.DB_COLLECTION_CHAT}")
-            
-            logger.info("Successfully connected to AstraDB")
-            print("🎉 Successfully connected to database!")
         except Exception as e:
-            logger.error(f"Failed to initialize database connection: {e}")
-            print(f"❌ Database connection failed: {e}")
+            error_msg = f"Failed to initialize database connection: {e}"
+            print(f"❌ {error_msg}")
+            logger.error(error_msg)
             raise
 
-    def _get_or_create_collection(self, collection_name):
-        """Get or create a collection with the given name."""
+    def _init_collections(self):
+        """Initialize all required collections."""
         try:
-            # Check if collection exists
-            print(f"🔍 Checking if collection '{collection_name}' exists...")
-            collections_response = self.db.get_collections()
+            print("🏗️ Setting up collections...")
             
-            # Improved error handling and logging for debugging
-            if not isinstance(collections_response, dict):
-                print(f"⚠️ Unexpected response type from get_collections(): {type(collections_response)}")
-                logger.warning(f"Unexpected response type from get_collections(): {type(collections_response)}")
-                print(f"Response content: {collections_response}")
+            # Create each collection with better error handling
+            self.thoughts_collection = self._safely_create_collection(config.DB_COLLECTION_THOUGHTS)
+            self.game_collection = self._safely_create_collection(config.DB_COLLECTION_GAME)
+            self.chat_collection = self._safely_create_collection(config.DB_COLLECTION_CHAT)
+            
+            print("✅ All collections initialized successfully")
+            
+        except Exception as e:
+            error_msg = f"Failed to initialize collections: {e}"
+            print(f"❌ {error_msg}")
+            logger.error(error_msg)
+            raise
+
+    def _safely_create_collection(self, collection_name):
+        """Create a collection with robust error handling."""
+        try:
+            print(f"🔍 Checking if collection '{collection_name}' exists...")
+            
+            # First try to get the collection directly - if it exists, this will work
+            try:
+                collection = AstraDBCollection(
+                    collection_name=collection_name,
+                    astra_db=self.db
+                )
                 
-            if "status" not in collections_response:
-                print(f"⚠️ 'status' key missing in collections response: {collections_response}")
-                logger.warning(f"'status' key missing in collections response: {collections_response}")
-                # Fall back to creating the collection anyway
-                self.db.create_collection(
+                # Test if the collection really exists by making a small query
+                test = collection.find({}, options={"limit": 1})
+                print(f"✅ Collection '{collection_name}' already exists")
+                return collection
+                
+            except Exception as inner_e:
+                # Collection might not exist, so we'll create it
+                print(f"ℹ️ Collection '{collection_name}' may not exist: {inner_e}")
+                print(f"🆕 Creating collection '{collection_name}'...")
+                
+                # Create the collection explicitly
+                creation_result = self.db.create_collection(
                     collection_name=collection_name,
                     dimension=1536  # Default dimension for OpenAI embeddings
                 )
-                print(f"🆕 Created new collection: {collection_name}")
-                logger.info(f"Created new collection: {collection_name}")
-            else:
-                collection_names = [c["name"] for c in collections_response["status"]["collections"]]
                 
-                if collection_name not in collection_names:
-                    # Create collection if it doesn't exist
-                    print(f"🆕 Creating new collection: {collection_name}")
-                    self.db.create_collection(
-                        collection_name=collection_name,
-                        dimension=1536  # Default dimension for OpenAI embeddings
-                    )
+                print(f"📊 Creation result: {creation_result}")
+                
+                if isinstance(creation_result, dict) and creation_result.get("status", {}).get("code") == 409:
+                    print(f"⚠️ Collection '{collection_name}' already exists (409 conflict)")
+                else:
                     print(f"✅ Created new collection: {collection_name}")
                     logger.info(f"Created new collection: {collection_name}")
-                else:
-                    print(f"✅ Collection '{collection_name}' already exists")
-            
-            # Get the collection
-            collection = AstraDBCollection(
-                collection_name=collection_name,
-                astra_db=self.db
-            )
-            return collection
-            
+                
+                # Now get the collection object
+                collection = AstraDBCollection(
+                    collection_name=collection_name,
+                    astra_db=self.db
+                )
+                return collection
+                
         except Exception as e:
-            error_msg = f"Error getting/creating collection {collection_name}: {e}"
+            error_msg = f"Error creating collection {collection_name}: {e}"
             print(f"❌ {error_msg}")
             logger.error(error_msg)
             raise

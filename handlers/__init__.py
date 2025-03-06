@@ -84,58 +84,92 @@ class HandlerManager:
     
     # Command handlers
     async def start_command(self, update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+        print(f"👋 Received /start command from user {update.effective_user.id}")
         await self.command_handler.start_command(update, context)
+        print(f"✅ Processed /start command for user {update.effective_user.id}")
     
     async def help_command(self, update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+        print(f"❓ Received /help command from user {update.effective_user.id}")
         await self.command_handler.help_command(update, context)
+        print(f"✅ Processed /help command for user {update.effective_user.id}")
     
     async def chat_command(self, update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+        print(f"💬 Received /chat command from user {update.effective_user.id}")
         await self.command_handler.chat_command(update, context)
+        print(f"✅ Processed /chat command for user {update.effective_user.id}")
     
     async def game_command(self, update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+        print(f"🎮 Received /game command from user {update.effective_user.id}")
         await self.command_handler.game_command(update, context)
+        print(f"✅ Processed /game command for user {update.effective_user.id}")
     
     async def normal_command(self, update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+        print(f"🔄 Received /normal command from user {update.effective_user.id}")
         await self.command_handler.normal_command(update, context)
+        print(f"✅ Processed /normal command for user {update.effective_user.id}")
     
     async def delete_command(self, update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+        print(f"🗑️ Received /delete command from user {update.effective_user.id}")
         await self.command_handler.delete_command(update, context)
+        print(f"✅ Processed /delete command for user {update.effective_user.id}")
     
     async def list_command(self, update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+        print(f"📋 Received /list command from user {update.effective_user.id}")
         await self.command_handler.list_command(update, context)
+        print(f"✅ Processed /list command for user {update.effective_user.id}")
     
     async def category_command(self, update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+        print(f"🏷️ Received /category command from user {update.effective_user.id}")
         await self.command_handler.category_command(update, context)
+        print(f"✅ Processed /category command for user {update.effective_user.id}")
     
     # Message handler
     async def handle_message(self, update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         """Main message handler that delegates to specific handlers based on state."""
         user_id = update.effective_user.id
         
+        # Debug message reception
+        print(f"📨 Received message from user {user_id}: {update.message.text if update.message.text else '[Not text]'}")
+        logger.info(f"Received message from user {user_id}: {update.message.text if update.message.text else '[Not text]'}")
+        
         # Initialize state if not set
         if user_id not in USER_STATE:
             USER_STATE[user_id] = STATE_NORMAL
+            print(f"🆕 Initialized state for user {user_id} to {STATE_NORMAL}")
         
         state = USER_STATE[user_id]
+        print(f"🔄 Current state for user {user_id}: {state}")
         
         try:
             if state == STATE_NORMAL:
+                print(f"📝 Delegating to normal handler for user {user_id}")
                 await self.normal_handler.handle_message(update, context)
+                print(f"✅ Normal handler processed message for user {user_id}")
             elif state == STATE_CHAT:
+                print(f"💬 Delegating to chat handler for user {user_id}")
                 await self.chat_handler.handle_message(update, context)
+                print(f"✅ Chat handler processed message for user {user_id}")
             elif state == STATE_GAME:
+                print(f"🎮 Delegating to game handler for user {user_id}")
                 await self.game_handler.handle_message(update, context)
+                print(f"✅ Game handler processed message for user {user_id}")
             elif state == STATE_DELETE:
                 # Should be handled by the callback query handler
+                print(f"❌ User {user_id} is in delete mode, sending instruction")
                 await update.message.reply_text(
                     "Please use the buttons to select a thought to delete, or type /normal to cancel."
                 )
+                print(f"✅ Sent delete mode instructions to user {user_id}")
         except Exception as e:
             logger.error(f"Error handling message: {e}")
+            print(f"❌ Error handling message for user {user_id}: {e}")
             await update.message.reply_text(
                 "Sorry, I encountered an error processing your message. Please try again."
             )
     
     # Callback query handler
     async def handle_callback_query(self, update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+        user_id = update.callback_query.from_user.id
+        print(f"🔄 Received callback query from user {user_id}: {update.callback_query.data}")
         await self.callback_handler.handle_callback_query(update, context)
+        print(f"✅ Processed callback query for user {user_id}")

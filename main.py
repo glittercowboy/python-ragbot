@@ -1,24 +1,68 @@
 # main.py
 import asyncio
 import logging
-from telegram.ext import ApplicationBuilder, CommandHandler, MessageHandler, CallbackQueryHandler, filters
+from telegram import Update
+from telegram.ext import ApplicationBuilder, CommandHandler, MessageHandler, CallbackQueryHandler, filters, ContextTypes
 import config
 from handlers import HandlerManager
 
 logger = logging.getLogger(__name__)
+
+# Simple echo handler for testing
+async def echo(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    """Echo the user message."""
+    print(f"Echo received: {update.message.text}")
+    await update.message.reply_text(f"You said: {update.message.text}")
+
+# Error handler
+async def error_handler(update, context):
+    """Log Errors caused by Updates."""
+    logger.error(f"Update {update} caused error {context.error}")
+    print(f"❌ Error in update {update}: {context.error}")
+
+async def test_database_connection():
+    """Test database connectivity before starting the bot."""
+    try:
+        print("🧪 Testing database connection...")
+        from database import DatabaseService
+        
+        # Create a temporary database service to test connectivity
+        db_service = DatabaseService()
+        
+        print("✅ Database connection test successful!")
+        return True
+    except Exception as e:
+        error_msg = f"Database connection test failed: {e}"
+        print(f"\n❌ {error_msg}")
+        logger.error(error_msg)
+        return False
 
 async def main() -> None:
     """Start the bot."""
     try:
         print("\n🤖 Starting Personal Reflection Bot...\n")
         
+        # Test database connection before proceeding
+        db_test_success = await test_database_connection()
+        if not db_test_success:
+            print("❌ Cannot continue without database connection")
+            return
+        
         # Create the Application instance
-        print("🔑 Initializing with Telegram token...")
+        print("\n🔑 Initializing with Telegram token...")
         application = ApplicationBuilder().token(config.TELEGRAM_BOT_TOKEN).build()
+        
+        # Add error handler
+        print("🛠️ Setting up error handler...")
+        application.add_error_handler(error_handler)
         
         # Initialize handlers
         print("🔧 Setting up message handlers...")
         handlers = HandlerManager()
+        
+        # Add simple echo handler for testing basic functionality
+        print("🔊 Adding test echo handler...")
+        application.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, echo))
         
         # Add command handlers
         print("📝 Registering command handlers...")
@@ -51,7 +95,16 @@ async def main() -> None:
         
         # Run the bot until it is interrupted
         logger.info("Bot started successfully!")
-        await application.updater.stop()
+        
+        # Keep the application running (replacing the idle() method)
+        try:
+            # Simple loop to keep the program running
+            while True:
+                await asyncio.sleep(1)
+        except (KeyboardInterrupt, SystemExit):
+            # On keyboard interrupt, stop the application
+            await application.stop()
+            await application.shutdown()
         
     except Exception as e:
         error_msg = f"Error starting bot: {e}"
