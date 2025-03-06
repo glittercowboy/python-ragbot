@@ -37,7 +37,11 @@ class CallbackHandler(BaseHandler):
                     return
                 
                 thought = USER_THOUGHTS[user_id][thought_index]
-                thought_id = thought.get("_id")
+                
+                # Extract thought_id safely
+                thought_id = None
+                if isinstance(thought, dict) and "_id" in thought:
+                    thought_id = thought["_id"]
                 
                 if not thought_id:
                     await query.edit_message_text("Could not find the thought ID. Please try again.")
