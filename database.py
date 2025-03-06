@@ -123,9 +123,7 @@ class DatabaseService:
             # Store the document with its vector embedding
             print(f"💾 Storing entry in {collection_name}...")
             # Note: AstraDB will handle the embedding generation automatically with Astra Vectorize
-            
-            # Use non-awaited version of insert_one
-            result = collection.insert_one({
+            result = await collection.insert_one({
                 "_id": entry_id,
                 "text": text,
                 "metadata": metadata
@@ -147,11 +145,11 @@ class DatabaseService:
             collection = self._get_collection_by_name(collection_name)
             
             print(f"🔍 Searching for similar entries in {collection_name}...")
-            
-            # Use non-awaited version of vector_find
-            results = collection.vector_find(
+            # Modified to use vector_find without sort parameter
+            results = await collection.vector_find(
                 query_text,
-                limit=limit
+                limit=limit,
+                includeSimilarity=True  # Include the similarity score
             )
             
             print(f"✅ Found {len(results)} similar entries in {collection_name}")
@@ -170,9 +168,8 @@ class DatabaseService:
             collection = self._get_collection_by_name(collection_name)
             
             print(f"🔍 Searching for entries in category '{category}'...")
-            
-            # Use non-awaited version of find
-            results = collection.find(
+            # Use find with just the limit parameter, no skip or sort
+            results = await collection.find(
                 filter={"metadata.categories": {"$in": [category]}},
                 options={"limit": limit}
             )
@@ -193,9 +190,7 @@ class DatabaseService:
             collection = self._get_collection_by_name(collection_name)
             
             print(f"🗑️ Deleting entry {entry_id} from {collection_name}...")
-            
-            # Use non-awaited version of delete_one
-            result = collection.delete_one({"_id": entry_id})
+            result = await collection.delete_one({"_id": entry_id})
             
             if result and result.get("deletedCount", 0) > 0:
                 print(f"✅ Deleted entry {entry_id} from {collection_name}")
@@ -230,16 +225,40 @@ class DatabaseService:
         try:
             collection = self._get_collection_by_name(collection_name)
             
-            # Calculate skip amount for pagination
-            skip = (page - 1) * page_size
-            
             print(f"📋 Retrieving entries from {collection_name} (page {page}, size {page_size})...")
             
-            # Use non-awaited version of find
-            results = collection.find(
-                filter={},
-                options={"limit": page_size, "skip": skip}
-            )
+            # Find documents - retrieve all and handle pagination in memory
+            # This avoids using skip which requires sort parameter
+            try:
+                # First attempt: get just what we need for this page
+                results = await collection.find(
+                    filter={},
+                    options={"limit": page_size}
+                )
+                
+                # If we need a different page, handle it differently
+                if page > 1:
+                    # Get all entries we need
+                    all_results = await collection.find(
+                        filter={},
+                        options={"limit": page * page_size}
+                    )
+                    
+                    # Manual pagination in memory
+                    start_idx = (page - 1) * page_size
+                    results = all_results[start_idx:start_idx + page_size] if start_idx < len(all_results) else []
+            
+            except Exception as inner_e:
+                # Fallback approach if the above fails
+                logger.warning(f"Using fallback approach for pagination: {inner_e}")
+                all_results = await collection.find(
+                    filter={},
+                    options={}  # No options to avoid potential issues
+                )
+                
+                # Manual pagination in memory
+                start_idx = (page - 1) * page_size
+                results = all_results[start_idx:start_idx + page_size] if start_idx < len(all_results) else []
             
             print(f"✅ Retrieved {len(results)} entries from {collection_name}")
             logger.info(f"Retrieved {len(results)} entries from {collection_name}")
