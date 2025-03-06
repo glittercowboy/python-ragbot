@@ -123,7 +123,9 @@ class DatabaseService:
             # Store the document with its vector embedding
             print(f"💾 Storing entry in {collection_name}...")
             # Note: AstraDB will handle the embedding generation automatically with Astra Vectorize
-            result = await collection.insert_one({
+            
+            # Use non-awaited version of insert_one
+            result = collection.insert_one({
                 "_id": entry_id,
                 "text": text,
                 "metadata": metadata
@@ -145,7 +147,9 @@ class DatabaseService:
             collection = self._get_collection_by_name(collection_name)
             
             print(f"🔍 Searching for similar entries in {collection_name}...")
-            results = await collection.vector_find(
+            
+            # Use non-awaited version of vector_find
+            results = collection.vector_find(
                 query_text,
                 limit=limit
             )
@@ -166,7 +170,9 @@ class DatabaseService:
             collection = self._get_collection_by_name(collection_name)
             
             print(f"🔍 Searching for entries in category '{category}'...")
-            results = await collection.find(
+            
+            # Use non-awaited version of find
+            results = collection.find(
                 filter={"metadata.categories": {"$in": [category]}},
                 options={"limit": limit}
             )
@@ -187,7 +193,9 @@ class DatabaseService:
             collection = self._get_collection_by_name(collection_name)
             
             print(f"🗑️ Deleting entry {entry_id} from {collection_name}...")
-            result = await collection.delete_one({"_id": entry_id})
+            
+            # Use non-awaited version of delete_one
+            result = collection.delete_one({"_id": entry_id})
             
             if result and result.get("deletedCount", 0) > 0:
                 print(f"✅ Deleted entry {entry_id} from {collection_name}")
@@ -226,8 +234,9 @@ class DatabaseService:
             skip = (page - 1) * page_size
             
             print(f"📋 Retrieving entries from {collection_name} (page {page}, size {page_size})...")
-            # Find documents
-            results = await collection.find(
+            
+            # Use non-awaited version of find
+            results = collection.find(
                 filter={},
                 options={"limit": page_size, "skip": skip}
             )
