@@ -123,7 +123,8 @@ class DatabaseService:
             # Store the document with its vector embedding
             print(f"💾 Storing entry in {collection_name}...")
             # Note: AstraDB will handle the embedding generation automatically with Astra Vectorize
-            result = await collection.insert_one({
+            # Changed: Removed await as insert_one is not awaitable
+            result = collection.insert_one({
                 "_id": entry_id,
                 "text": text,
                 "metadata": metadata
@@ -145,8 +146,8 @@ class DatabaseService:
             collection = self._get_collection_by_name(collection_name)
             
             print(f"🔍 Searching for similar entries in {collection_name}...")
-            # Modified to use vector_find without sort parameter
-            results = await collection.vector_find(
+            # Changed: Removed await as vector_find is not awaitable
+            results = collection.vector_find(
                 query_text,
                 limit=limit,
                 includeSimilarity=True  # Include the similarity score
@@ -168,8 +169,8 @@ class DatabaseService:
             collection = self._get_collection_by_name(collection_name)
             
             print(f"🔍 Searching for entries in category '{category}'...")
-            # Use find with just the limit parameter, no skip or sort
-            results = await collection.find(
+            # Changed: Removed await as find is not awaitable
+            results = collection.find(
                 filter={"metadata.categories": {"$in": [category]}},
                 options={"limit": limit}
             )
@@ -190,7 +191,8 @@ class DatabaseService:
             collection = self._get_collection_by_name(collection_name)
             
             print(f"🗑️ Deleting entry {entry_id} from {collection_name}...")
-            result = await collection.delete_one({"_id": entry_id})
+            # Changed: Removed await as delete_one is not awaitable
+            result = collection.delete_one({"_id": entry_id})
             
             if result and result.get("deletedCount", 0) > 0:
                 print(f"✅ Deleted entry {entry_id} from {collection_name}")
@@ -231,7 +233,8 @@ class DatabaseService:
             # This avoids using skip which requires sort parameter
             try:
                 # First attempt: get just what we need for this page
-                results = await collection.find(
+                # Changed: Removed await as find is not awaitable
+                results = collection.find(
                     filter={},
                     options={"limit": page_size}
                 )
@@ -239,7 +242,8 @@ class DatabaseService:
                 # If we need a different page, handle it differently
                 if page > 1:
                     # Get all entries we need
-                    all_results = await collection.find(
+                    # Changed: Removed await as find is not awaitable
+                    all_results = collection.find(
                         filter={},
                         options={"limit": page * page_size}
                     )
@@ -251,7 +255,8 @@ class DatabaseService:
             except Exception as inner_e:
                 # Fallback approach if the above fails
                 logger.warning(f"Using fallback approach for pagination: {inner_e}")
-                all_results = await collection.find(
+                # Changed: Removed await as find is not awaitable
+                all_results = collection.find(
                     filter={},
                     options={}  # No options to avoid potential issues
                 )
